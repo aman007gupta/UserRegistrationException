@@ -1,6 +1,13 @@
 package com.userregistration;
 
+@FunctionalInterface
+interface userRegistrationValidation {
+    boolean check(String a,  String b);
+}
+
 public class UserRegistrationValidate {
+    userRegistrationValidation input = (x,y) -> x.matches(y);
+
     String message;
 
     public UserRegistrationValidate(String message) {
@@ -18,10 +25,11 @@ public class UserRegistrationValidate {
     }
 
     public boolean fName() throws UserRegistrationValidateException {
+        String firstNamePattern = "^[A-Z]{1}[a-z]{2,}$";
         try {
-            if (message.length() == 0)
+            if (message.length()==0)
                 throw new UserRegistrationValidateException(UserRegistrationValidateException.ExceptionType.ENTERED_EMPTY, "Please enter valid user first name");
-            if (message.matches("^[A-Z]{1}[a-z]{2,}$")) {
+            if (input.check(message, firstNamePattern)) {
                 System.out.println("Valid first name of user");
                 return true;
             } else {
@@ -34,18 +42,20 @@ public class UserRegistrationValidate {
     }
 
     public boolean lName() throws UserRegistrationValidateException {
+        String lastNamePattern = "^[A-Z]{1}[a-z]{2,}$";
         try {
-            if (message.matches("^[A-Z]{1}[]a-z]{2,}")) {
-                System.out.println("Valid last name of User");
+            if (message.length()==0)
+                throw new UserRegistrationValidateException(UserRegistrationValidateException.ExceptionType.ENTERED_EMPTY, "Please enter valid user last name");
+            if (input.check(message, lastNamePattern)) {
+                System.out.println("Valid last name of user");
                 return true;
             } else {
                 System.out.println("Invalid user last name");
                 return false;
             }
         } catch (NullPointerException e) {
-            throw new UserRegistrationValidateException(UserRegistrationValidateException.ExceptionType.ENTERED_NULL, "Please enter proper user last name");
-        }
-    }
+            throw new UserRegistrationValidateException(UserRegistrationValidateException.ExceptionType.ENTERED_NULL, "Please enter valid user last name");
+        }    }
 
     public boolean email(String message) throws UserRegistrationValidateException {
         this.message = message;
@@ -54,8 +64,11 @@ public class UserRegistrationValidate {
 
 
     public boolean email() throws UserRegistrationValidateException {
+        String emailPattern = "^[0-9a-zA-Z]{1,}([._+-]?[0-9a-zA-Z]{1,})?(@[0-9a-zA-Z]{1,})([.][a-zA-Z]{2,})([.]?[a-zA-Z]{2})?$";
         try {
-            if (message.matches("^[0-9a-zA-Z]{1,}([._+-]?[0-9a-zA-Z]{1,})?(@[0-9a-zA-Z]{1,})([.][a-zA-Z]{2,})([.]?[a-zA-Z]{2})?$")) {
+            if (message.length()==0)
+                throw new UserRegistrationValidateException(UserRegistrationValidateException.ExceptionType.ENTERED_EMPTY, "Please enter valid user email id");
+            if (input.check(message, emailPattern)) {
                 System.out.println("Valid email id of User");
                 return true;
             } else {
@@ -73,8 +86,11 @@ public class UserRegistrationValidate {
     }
 
     public boolean mobileNo() throws UserRegistrationValidateException {
+        String mobileNoPattern = "([0-9]{2})[ ][6-9]{1}[0-9]{9}";
         try {
-            if (message.matches("([0-9]{2})[ ][6-9]{1}[0-9]{9}")) {
+            if (message.length()==0)
+                throw new UserRegistrationValidateException(UserRegistrationValidateException.ExceptionType.ENTERED_EMPTY, "Please enter valid user mobile no");
+            if (input.check(message, mobileNoPattern)) {
                 System.out.println("Valid mobile no of User");
                 return true;
             } else {
@@ -92,8 +108,11 @@ public class UserRegistrationValidate {
     }
 
     public boolean password() throws UserRegistrationValidateException {
+        String passwordPattern = "(?=.*[*.!@$%^&])(?=.*[A-Z])(?=.*[0-9])(.{8,})";
         try {
-            if (message.matches("(?=.*[*.!@$%^&])(?=.*[A-Z])(?=.*[0-9])(.{8,})")) {
+            if (message.length()==0)
+                throw new UserRegistrationValidateException(UserRegistrationValidateException.ExceptionType.ENTERED_EMPTY, "Please enter valid user password");
+            if (input.check(message, passwordPattern)) {
                 System.out.println("Valid password of User");
                 return true;
             } else {
